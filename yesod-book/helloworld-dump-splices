@@ -1,0 +1,82 @@
+src/helloworld.hs:(9,35)-(11,2): Splicing expression
+    Language.Haskell.TH.Quote.quoteExp
+      parseRoutes
+      "\n\
+      \/ HomeR GET\n"
+  ======>
+    [Yesod.Routes.TH.Types.ResourceLeaf
+       (((((Yesod.Routes.TH.Types.Resource "HomeR") [])
+            ((Yesod.Routes.TH.Types.Methods Nothing) ["GET"]))
+           [])
+          True)]
+src/helloworld.hs:(9,1)-(11,2): Splicing declarations
+    mkYesod
+      "HelloWorld"
+      ([Yesod.Routes.TH.Types.ResourceLeaf
+          (((((Yesod.Routes.TH.Types.Resource "HomeR") [])
+               ((Yesod.Routes.TH.Types.Methods Nothing) ["GET"]))
+              [])
+             True)])
+  ======>
+    instance ParseRoute HelloWorld where
+      parseRoute
+        = ((\ f_a7sY x_a7sZ -> (f_a7sY ()) x_a7sZ) ::
+             (()
+              -> ([Data.Text.Internal.Text],
+                  [(Data.Text.Internal.Text, Data.Text.Internal.Text)])
+                 -> Maybe (Route a_a7t0))
+             -> ([Data.Text.Internal.Text],
+                 [(Data.Text.Internal.Text, Data.Text.Internal.Text)])
+                -> Maybe (Route a_a7t0))
+            helper_a7sX
+        where
+            helper_a7sX env2609_a7sS req2609_a7sT
+              = helper2609_a7sU (fst req2609_a7sT)
+              where
+                  helper2609_a7sU []
+                    = ((((\ _ _ x_a7sW _ -> x_a7sW) (error "mdsGetHandler"))
+                          env2609_a7sS)
+                         (Just HomeR))
+                        req2609_a7sT
+                  helper2609_a7sU _
+                    = ((((\ _ _ x_a7sV _ -> x_a7sV) (error "mds404")) env2609_a7sS)
+                         Nothing)
+                        req2609_a7sT
+    instance RenderRoute HelloWorld where
+      data Route HelloWorld
+        = HomeR
+        deriving (Show, Eq, Read)
+      renderRoute HomeR = ([], [])
+    instance RouteAttrs HelloWorld where
+      routeAttrs HomeR {} = Data.Set.Internal.fromList []
+    resourcesHelloWorld :: [Yesod.Routes.TH.Types.ResourceTree String]
+    resourcesHelloWorld
+      = [Yesod.Routes.TH.Types.ResourceLeaf
+           (((((Yesod.Routes.TH.Types.Resource "HomeR") [])
+                ((Yesod.Routes.TH.Types.Methods Nothing) ["GET"]))
+               [])
+              True)]
+    type Handler = HandlerFor HelloWorld
+    type Widget = WidgetFor HelloWorld ()
+    instance YesodDispatch HelloWorld where
+      yesodDispatch env6790_a7sP req6790_a7sQ
+        = helper6790_a7sR (Network.Wai.Internal.pathInfo req6790_a7sQ)
+        where
+            helper6790_a7sR []
+              = case Network.Wai.Internal.requestMethod req6790_a7sQ of
+                  "GET"
+                    -> (((yesodRunner getHomeR) env6790_a7sP) (Just HomeR))
+                         req6790_a7sQ
+                  _ -> (((yesodRunner (Data.Functor.void badMethod)) env6790_a7sP)
+                          (Just HomeR))
+                         req6790_a7sQ
+            helper6790_a7sR _
+              = (((yesodRunner (Data.Functor.void notFound)) env6790_a7sP)
+                   Nothing)
+                  req6790_a7sQ
+src/helloworld.hs:16:35-48: Splicing expression
+    Language.Haskell.TH.Quote.quoteExp whamlet "Hello World!"
+  ======>
+    (asWidgetT . toWidget)
+      ((Text.Blaze.Internal.preEscapedText . Data.Text.pack)
+         "Hello World!")
